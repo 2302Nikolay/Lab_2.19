@@ -9,15 +9,15 @@ from colorama import Fore, Style
 
 
 def tree(directory):
-    print(Fore.RED + f'>>> {directory}')
-    for path in sorted(directory.rglob('*')):
+    print(Fore.RED + f">>> {directory}")
+    for path in sorted(directory.rglob("*")):
         d = len(path.relative_to(directory).parts)
-        sp = ' ' * d
-        print(Fore.GREEN + Style.BRIGHT + f'{sp} >> {path.name}')
-        for new_path in sorted(directory.joinpath(path).glob('*')):
+        sp = " " * d
+        print(Fore.GREEN + Style.BRIGHT + f"{sp} >> {path.name}")
+        for new_path in sorted(directory.joinpath(path).glob("*")):
             d = len(new_path.relative_to(directory.joinpath(path)).parts)
-            sp = '\t' * d
-            print(Fore.BLUE + f'{sp} > {new_path.name}')
+            sp = "\t" * d
+            print(Fore.BLUE + f"{sp} > {new_path.name}")
 
 
 def main(command_line=None):
@@ -28,54 +28,27 @@ def main(command_line=None):
     # Создаем основной парсер командной строки
     parser = argparse.ArgumentParser("tree")
     parser.add_argument(
-        "--version",
-        action="version",
-        help="The main parser",
-        version="%(prog)s 0.1.0"
+        "--version", action="version", help="The main parser", version="%(prog)s 0.1.0"
     )
 
     subparsers = parser.add_subparsers(dest="command")
 
     # Создаем субпарсер для создания новой папки
-    makedir = subparsers.add_parser(
-        "mkdir",
-        parents=[file_parser]
-    )
-    makedir.add_argument(
-        "filename",
-        action="store"
-    )
+    makedir = subparsers.add_parser("mkdir", parents=[file_parser])
+    makedir.add_argument("filename", action="store")
 
     # Субпарсер для удаления папок
-    makedir = subparsers.add_parser(
-        "rmdir",
-        parents=[file_parser]
-    )
-    makedir.add_argument(
-        "filename",
-        action="store"
-    )
+    makedir = subparsers.add_parser("rmdir", parents=[file_parser])
+    makedir.add_argument("filename", action="store")
 
     # Субпарсер для создания файлов
-    makedir = subparsers.add_parser(
-        "touch",
-        parents=[file_parser]
-    )
-    makedir.add_argument(
-        "filename",
-        action="store"
-    )
+    makedir = subparsers.add_parser("touch", parents=[file_parser])
+    makedir.add_argument("filename", action="store")
     # Субпарсер для удаления файлов
-    makedir = subparsers.add_parser(
-        "rm",
-        parents=[file_parser]
-    )
-    makedir.add_argument(
-        "filename",
-        action="store"
-    )
+    makedir = subparsers.add_parser("rm", parents=[file_parser])
+    makedir.add_argument("filename", action="store")
     args = parser.parse_args(command_line)
-    if args.command == 'mkdir':
+    if args.command == "mkdir":
         directory_path = cur / args.filename
         directory_path.mkdir()
         tree(cur)
